@@ -31,4 +31,14 @@
      Implement error handling, error messaging,
      Write tests, and documentation,
      Create PowerPoint to use for presentation,
-    
+   
+UPDATE:
+Supplemental Topic Presentation powerpoint created. 
+Messaging App is almost done, used Firebase/Firestore.
+
+App still not working properly, such as signing in using a different Google Account, 
+and sent and received messages share the same css, which needs to be changed, currently trying to figure that out.
+
+For Final project, I will have to use Mongoose, mongodb, and write tests.
+
+
