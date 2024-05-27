@@ -1,4 +1,16 @@
+# marissa-proof-of-concept
+
+UPDATE:
+Supplemental Topic Presentation powerpoint created. 
+Messaging App is almost done, used Firebase/Firestore.
+
+App still not working properly, such as signing in using a different Google Account, 
+and sent and received messages share the same css, which needs to be changed, currently trying to figure that out.
+
+For the final project, I will have to use Mongoose, mongodb, and write tests.
+
 # marissa-project-proposal
+
 1. A description of the scenario your project is operating in.
 
    I will be creating a real-time chat-room application. Users will sign in with Google. The home screen will show a log-in button, once logged in, the chat-room will display. Firebase will collect and store data including userIDs, messages, and timestamp. 
@@ -32,13 +44,5 @@
      Write tests, and documentation,
      Create PowerPoint to use for presentation,
    
-UPDATE:
-Supplemental Topic Presentation powerpoint created. 
-Messaging App is almost done, used Firebase/Firestore.
-
-App still not working properly, such as signing in using a different Google Account, 
-and sent and received messages share the same css, which needs to be changed, currently trying to figure that out.
-
-For Final project, I will have to use Mongoose, mongodb, and write tests.
 
 
