@@ -3,22 +3,31 @@ import './Send.css'
 import { auth, db} from '../firebase'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
-const Send = () => {
-    const [input, setInput] = useState(' ');    
+const Send = ({scroll}) => {
+    const [input, setInput] = useState(' '); 
+
     const sendMessage = async (e) => {
         e.preventDefault()
-        if (input === ' '){
+        if (input.trim() === ' '){
             alert('No message entered')
             return
         }
-        const {uid, displayName} = auth.currentUser 
-        await addDoc(collection(db, 'messages'), {
+        const { uid, displayName} = auth.currentUser;
+        try{
+            await addDoc(collection(db, 'messages'), {
             text: input,
             userName: displayName,
             uid,
+            sentByCurrentUser: true,
             timestamp: serverTimestamp()
-        })
+        });
         setInput(' ')
+        scroll.current.scrollIntoView({behavior: 'smooth'});
+        } catch (error){
+            console.error('Error sending message:', error);
+        };
+        
+        
         
     }
 
@@ -30,7 +39,7 @@ const Send = () => {
         placeholder='Message' 
         value={input}
         onChange={(e) => setInput(e.target.value)}/>
-        <button type='submit'>Send</button>
+        <button onClick={sendMessage}>Send</button>
     </form>
   )
 }

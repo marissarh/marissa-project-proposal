@@ -11,13 +11,13 @@ const Message = ({message}) => {
   return (
     <><div> 
     
-    <div className={`message${messageUser}`}>
+    <div className={`mesage${messageUser}`}>
     <p className='username'>{message.userName}</p>
     <div className='message'>{message.text}</div>
     
   
     </div>
-    </div>
+</div>
     </>
   )
 }

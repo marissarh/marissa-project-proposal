@@ -12,15 +12,15 @@ function App() {
   return (
     <>
     <div>
-        
-        <section>
+    <section>
           <div >
             <div className='appContainer'>
               <Navbar />
             </div>
           {user ? <Messaging/> : null}
           </div>
-        </section>
+        </section> 
+        
      </div>
     </>
   )
