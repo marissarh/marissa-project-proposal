@@ -3,7 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import { auth} from './firebase'
 import {useAuthState} from 'react-firebase-hooks/auth'
-import Messaging from './components/Messaging'
+import Messages from './components/Messages'
 
 function App() {
   const [user] = useAuthState(auth)
@@ -18,7 +18,7 @@ function App() {
             <div className='appContainer'>
               <Navbar />
             </div>
-          {user ? <Messaging/> : null}
+          {user ? <Messages/> : null}
           </div>
         </section>
      </div>
