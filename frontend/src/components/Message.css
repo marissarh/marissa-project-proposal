@@ -1,0 +1,23 @@
+
+.username{
+    margin-bottom: -2rem;
+    margin-left: 15px;
+    color: white;
+    font-size: 1 rem;
+    font-weight: bolder;
+    position: relative;
+}
+.message{
+    background-color: pink;
+    margin: 10px;
+    padding: 20px;
+         
+}
+.sent{
+    align-self: flex-end;
+    background-color: aqua;
+}
+.received{
+    background-color: gray;
+    align-self: flex-start;
+}
