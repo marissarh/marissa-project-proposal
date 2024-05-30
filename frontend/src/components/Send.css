@@ -5,12 +5,6 @@
     font-weight: bold;
     margin-top: 10px;
     
-<<<<<<< HEAD
-=======
-    
-    
-
->>>>>>> e298e4d75157e374a4620e804caa191094e9768a
 }
 .input{
     width: 80%;
@@ -18,17 +12,7 @@
     background-color: rgb(136, 245, 245);
     padding: 10px;
     border: none;
-<<<<<<< HEAD
     box-shadow: 0px 0px 3px gray;
-=======
-    
-    
-}
-button{
-    background-color: rgb(191, 189, 189);
-    padding-left: 4px;
-    padding-right: 2px;
->>>>>>> e298e4d75157e374a4620e804caa191094e9768a
     margin-bottom: 10px;
     margin-left: 10px;
     
@@ -41,9 +25,4 @@ button{
 }
 button:hover{
     background-color: rgb(255, 234, 95);
-<<<<<<< HEAD
 }
-=======
-
-}
->>>>>>> e298e4d75157e374a4620e804caa191094e9768a
