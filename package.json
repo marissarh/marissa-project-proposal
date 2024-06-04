@@ -4,9 +4,16 @@
   "description": "1. A description of the scenario your project is operating in.",
   "main": "server.js",
   "scripts": {
+    "test": "jest",
     "server": "node backend/server.js"
   },
   "type": "module",
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {"^.+\\.jsx?$": "babel-jest"}
+  },
+  "target": "exsnext",
+  "module": "commonjs",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,13 +25,21 @@
     "express": "^4.19.2",
     "firebase": "^10.12.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.0",
+    "mongoose": "^8.4.1",
     "react-firebase-hooks": "^5.1.1",
     "react-google-button": "^0.8.0",
     "save-dev": "^0.0.1-security",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.2"
+    "@babel/core": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^14.2.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jsdom": "^24.0.0",
+    "nodemon": "^3.1.2",
+    "supertest": "^7.0.0"
   }
 }

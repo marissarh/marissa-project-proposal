@@ -1,17 +1,12 @@
 import bcrypt from "bcrypt";
 import express from "express";
 import User from '../models/user.js';
-import jwt from 'jsonwebtoken'
+import generateToken from '../utils/generateToken.js';
 
 
 const router = express.Router();
 
-const generateToken = (userId) => {
-    return jwt.sign({ userId}, process.env.JWT_SECRET, {
-        expiresIn: '15d'
-    });
 
-};
 
 router.post("/signup", async (req, res) => {
     try{
@@ -32,16 +27,19 @@ router.post("/signup", async (req, res) => {
             username,
             password: hashedPassword
         });
-
-        await newUser.save();
-
-        const token = generateToken(newUser._id);
+        if (newUser) {
+            generateToken(newUser._id, res);
+            await newUser.save();
+        
         res.status(201).json({
             token,
             _id: newUser._id,
             fullName: newUser.fullName,
             username: newUser.username
         });
+    } else {
+        res.status(400).json({error: "Invalid user data"});
+    }
    
     }catch(error){
         console.error("Error in signup route",error.message);
@@ -54,9 +52,9 @@ router.post("/login", async (req, res) => {
     try{
         const {username, password} = req.body;
         const user = await User.findOne({username});
-        const isPasswordCorrent = await bcrypt.compare(password, user?.password || " ");
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || " ");
 
-        if (!user || !isPasswordCorrent){
+        if (!user || !isPasswordCorrect){
             return res.status(400).json({error: "Invalid username or password"});
         }
 
@@ -64,8 +62,8 @@ router.post("/login", async (req, res) => {
         res.status(200).json({
             token,
             _id: user._id,
-            fullName: newUser.fullName,
-            username: newUser.username
+            fullName: user.fullName,
+            username: user.username
         });
         
     } catch (error) {
@@ -83,6 +81,7 @@ router.post("/logout", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error"});
     }
 });
+
 
 
 export default router;

@@ -6,7 +6,7 @@ const messageSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    receivedId: {
+    receiverId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
@@ -16,6 +16,8 @@ const messageSchema = new mongoose.Schema({
         required: true
     }
 }, {timestamps: true});
+
+messageSchema.index({senderId: 1, receiverId: 1} );
 
 const Message = mongoose.model("Message", messageSchema);
 

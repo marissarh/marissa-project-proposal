@@ -4,13 +4,16 @@ import User from '../models/user.js';
 
 
 const router = express.Router();
+
+
+
 const verifyRoute = async (req, res, next) => {
     try{
         const token = req.jwt;
 
         if (!token) {
             return res.status(401).json(
-                { error: "Unauthprized = No Token Provided"});
+                { error: "Unauthorized = No Token Provided"});
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -33,16 +36,16 @@ const verifyRoute = async (req, res, next) => {
 }
 router.get("/", verifyRoute, async (req, res) => {
     try{
-        const loggedInUserId= req.user._id
+        const loggedInUserId= req.user._id;
 
         const allUsers = await User.find({ _id: { $ne: loggedInUserId}}).select("-password");
         res.status(200).json(allUsers);
 
     } catch(error){
-        console.log("Error in user Route");
+        console.error("Error in user Route", error.message);
         res.status(500).json({ error: " Internal server error"});
 
     }
 })
 
-export default User
+export default router;
