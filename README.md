@@ -1,3 +1,15 @@
+# self-evaluation
+
+I continued working on creating a messaging app. This time I decided to demo my work by using Postman. I started with setting up the folder and installing mongoose, express, bcrypt, jsonwebtoken, as well as creating the projects on Postman and MongoDB. 
+I set up the /routes/auth.js and /user.js and /message.js in the code as well as in PostMan. I also generated a json token, and used bcrypt to hash the users' passwords. 
+I added middleware (verifyRoute) to /routes/user.js and /message.js.
+
+As I tested my code on Postman, I got stuck not being able to figure out how to send messages to another user, as well as, viewing messages between users. This became a challenge.
+
+Testing my code also became a challenge. As I tried to write the test code and test it, I found myself changing too many things, to the point, when I went back to run the server, MongoDB would not connect. So I tried to reverse my code so I would have something to demo in class. 
+
+I really enjoyed writing the routes and seeing my code work on Postman and MongoDb, but I got frustrated as I saw other parts of my code fail, and cause errors. Next time I would like to reach out to the instructors sooner to find solutions instead of trying to figure it out on my own. 
+
 # marissa-proof-of-concept
 
 UPDATE:
