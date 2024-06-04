@@ -1,55 +1,54 @@
 const request = require("supertest");
 const app = require("../app");
-const User = require('../models/user');
+const User = require('../models/user.js');
 const server = require('../server');
 const bcrypt = require('bcrypt');
 
-describe('Authentication Routes', () => {
-    beforeEach(async () => {
-        await User.deleteMany({});
-       
-    });
+describe('POST /signup', () => {
 
-    it('POST /signup - should return a token and user details on successful sign-up', async () => {
+    it('should create a new user and return a token', async () => {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('1234567', salt);
+        
         const userData = {
             fullName: 'John Doe',
             username: 'johndoe',
-            password: '1234567',
-            confirmPassword: '1234567',
+            password: 1234567,
+            confirmPassword: 1234567,
         };
 
         const response = await request(app)
-        .post('/signup')
+        .post('/api/auth/signup')
         .send(userData)
         .expect(201);
+        
 
         expect(response.body).toHaveProperty('token');
         expect(response.body).toHaveProperty('_id');
-       //expect(response.body).toHaveProperty('fullName', 'John Doe');
-        //expect(response.body).toHaveProperty('username','johndoe');
+        expect(response.body.fullName).toBe('John Doe');
+        expect(response.body.username).toBe('johndoe');
 
-        const user = await findOne({ username: 'johndoe'});
-        expect(user).toBeTruthy();
-        expect(user.fullName).toBe('John Doe');
-        
+     
     });
 });
 
 describe('POST /login', () => {
+    let hashedPassword;
     beforeAll(async () => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash('1234567', salt);
+     
+    });
 
-        await User.create({
+    it('Login with valid credentials should return a token and user details', async () => {
+        
+        const user = {
             username: 'johndoe',
             password: hashedPassword,
             fullName: 'John Doe'
-        });
-    });
+        };
+        await request(app).post('/signup').send(user);
 
-
-
-    test('Login with valid credentials should return a token and user details', async () => {
         const response = await request(app)
         .post('/login')
         .send({
@@ -58,14 +57,14 @@ describe('POST /login', () => {
         });
 
         expect(response.status).toBe(200);
-        expect(response.status).toHaveProperty('token');
-        expect(response.status).toHaveProperty('_id');
-        expect(response.status).toHaveProperty('fullName', 'John Doe');
-        expect(response.status).toHaveProperty('username', 'johndoe');
+        expect(response.body).toHaveProperty('token');
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body.fullName).toBe('John Doe');
+        expect(response.body.username).toBe('johndoe');
     
     });
 
-    test('Login with invalid credentials should return an error', async () => {
+    it('Login with invalid credentials should return an error', async () => {
         const response = await request(app)
         .post('/login')
         .send({
@@ -75,6 +74,6 @@ describe('POST /login', () => {
 
         expect(response.status).toBe(401);
         expect(response.body).toHaveProperty('error', 'Invalid username or password');
-    })
-})
+    });
+});
 

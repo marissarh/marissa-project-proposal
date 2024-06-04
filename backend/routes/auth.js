@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import express from "express";
 import User from '../models/user.js';
+import jwt from 'jsonwebtoken';
 import generateToken from '../utils/generateToken.js';
 
 
@@ -27,9 +28,8 @@ router.post("/signup", async (req, res) => {
             username,
             password: hashedPassword
         });
-        if (newUser) {
-            generateToken(newUser._id, res);
             await newUser.save();
+            const token = generateToken(newUser._id);
         
         res.status(201).json({
             token,
@@ -37,9 +37,6 @@ router.post("/signup", async (req, res) => {
             fullName: newUser.fullName,
             username: newUser.username
         });
-    } else {
-        res.status(400).json({error: "Invalid user data"});
-    }
    
     }catch(error){
         console.error("Error in signup route",error.message);
