@@ -1,11 +1,23 @@
 import jwt from 'jsonwebtoken';
 
 const generateToken = (userId) => {
-    const token =  jwt.sign({ userId}, process.env.JWT_SECRET, {
-        expiresIn: '15d'
-    });
-    
+    //const jwt = require('jsonwebtoken');
+
+  const secret = process.env.JWT_SECRET || 'my super secret';
+
+ {/*const data = {userId, _id}; 
+    let token = jwt.sign({data, secret})
+    console.log(token);
+jwt.verify(token, secret)*/}
+
+    return jwt.sign({ userId}, secret, {
+       expiresIn: '15d'
+     
+   });
+     
 
 };
+  
+
 
 export default generateToken;

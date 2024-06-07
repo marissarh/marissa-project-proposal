@@ -9,17 +9,26 @@ const router = express.Router();
 
 const verifyRoute = async (req, res, next) => {
     try{
-        const token = req.jwt;
+       // const token = req.jwt; 
+         //const data = {userId, _id}; 
+        //let token = jwt.sign(data, secret, {expiresIn: '15d'})
+        //console.log(token);
+        //jwt.verify(token, secret)
 
-        if (!token) {
-            return res.status(401).json(
-                { error: "Unauthorized = No Token Provided"});
-        }
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+const token = req.headers.authorization;
+if(!token){
+    return res.status(401).json({error: "Unauthorized - No Token Provided"})
+}
 
-        if(!decoded){
+        const secret = 'my super secret';
+        const decoded = jwt.verify(token, secret);
+    
+      
+       // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+       if(!decoded){
             return res.status(401).json({error: "Unauthorized - No Token Provided"});
-        }
+       }
         const user = await User.findById(decoded.userId).select("-password");
         if (!user) {
             return res.status(404).json({ error: "User not found"});
@@ -30,8 +39,8 @@ const verifyRoute = async (req, res, next) => {
 
     }
     catch(error){
-        console.log("Verification Error:", error.message)
-        res.status(500).json({ error: "Internal server error"});
+        console.log("user Verification Error:")
+        res.status(500).json({ error: "verifyRoute Internal server error"});
     }
 }
 router.get("/", verifyRoute, async (req, res) => {
@@ -43,7 +52,7 @@ router.get("/", verifyRoute, async (req, res) => {
 
     } catch(error){
         console.error("Error in user Route", error.message);
-        res.status(500).json({ error: " Internal server error"});
+        res.status(500).json({ error: " user /get Internal server error"});
 
     }
 })

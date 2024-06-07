@@ -17,7 +17,7 @@ const messageSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-messageSchema.index({senderId: 1, receiverId: 1} );
+messageSchema.index({senderId: 1, receiverId: 1, message: 'text'} );
 
 const Message = mongoose.model("Message", messageSchema);
 
