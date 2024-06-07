@@ -18,9 +18,8 @@ app.use("/api/auth", auth);
 app.use("/api/message", message);
 app.use("/api/users", user);
 
-//app.get("/", (req, res) => {
-   // res.send("Hello World");
-//});
+
+
 
 
 

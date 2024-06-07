@@ -9,14 +9,28 @@ const router = express.Router();
 
 const verifyRoute = async (req, res, next) => {
     try {
-        const token = req.headers.authorization;
+        let token = req.headers.authorization;
+        console.error("first token = " + token)
 
         if (!token || !token.startsWith('Bearer')) {
             return res.status(401).json({ error: "Unauthorized - No Token Provided" });
         }
         
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+        //console log token and process.env.JWT_SECRET
+
+        //remove the "Bearer "
+
+        //generate another token
+
+        let newToken = token.replace('Bearer ', '')
+
+        console.error("secret = " + process.env.JWT_SECRET)
+        console.error("replaced token = " + newToken)
+
+
+        const decoded = jwt.verify(newToken, process.env.JWT_SECRET); 
+
         if (!decoded) {
             return res.status(401).json({ error: "Unauthorized - Invalid Token" });
         }
@@ -29,7 +43,7 @@ const verifyRoute = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        console.error("Verification Error:", error.message);
+        console.error("message Verification Error:", error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
@@ -74,7 +88,7 @@ router.post("/send/:id", verifyRoute, async (req, res) => {
         await Promise.all([conversation.save(), newMessage.save()]);
         res.status(201).json(newMessage);
     } catch (error) {
-        console.error("Error in message route:", error.message);
+        console.error("Error in message route:");
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
@@ -101,36 +115,32 @@ router.get("/:id", verifyRoute, async (req, res) => {
 });
 
 router.get("/search", async (req, res) => {
-    try{
-        const { keyword } = req.query;
-        const messages = await Message.find({ $text: {search: keyword}});
-        res.status(200).json(messages);
+    
+        const searchQuery = req.query.q;
+      try{  
+        const foundMessages = await Message.find({ $text: { $search: searchQuery}});
+        
+        if (foundMessages.length === 0){
+            return res.status(404).json({ error: 'No messages found matching the search query'});
+        }
+        res.status(200).json(foundMessages);
     } catch (error){
         console.errorO("Error in text search route:", error.message);
-        res.status(500).json({ error: "Internal Server Error"});
+        res.status(500).json({ error: "An error occurred while searching for messages"});
     }
 });
 
-router.put("/update/:id", verifyRoute, async (req, res) => {
-    try{
-         const messageId = req.params.id;
-         const {message} = req.body;
-         const updatedMessage = await Message.findByIdAndUpdate(messageId, {message}, { new: true});
 
-         if (!updatedMessage) {
-            return res.status(404).json({ error: "Message not found"});
-         }
-         res.status(200).json(updatedMessage);
-    } catch (error) {
-        console.error("Error in updating message:", error.message);
-        res.status(500).json({error: "Internal Server Error"});
-    }
-});
 
-router.delete("/delete/:id", verifyRoute, async (req, res) => {
-    try{
+router.delete("/:id", verifyRoute, async (req, res) => {
+   
         const messageId = req.params.id;
-
+ try{
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    if (!user ||  user.role !== 'admin') {
+        return res.status(403).json({error: 'Unauthorized access'});
+    }
         const deletedMessage = await Message.findByIdAndDelete(messageId);
 
         if (!deletedMessage) {
